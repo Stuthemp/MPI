@@ -41,14 +41,14 @@ int main(int argc, char* argv[])
 
 			for (int k = 1; k < ProcNum; k++) {
 
-				//Îòïðàâëÿåì ñîîáùåíèå îò ïðîöåññà ðàíãà 0 âñåì îñòàëüíûì
+				//ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ñ‚ Ð¿Ñ€Ð¾Ñ†ÐµÑÑÐ° Ñ€Ð°Ð½Ð³Ð° 0 Ð²ÑÐµÐ¼ Ð¾ÑÑ‚Ð°Ð»ÑŒÐ½Ñ‹Ð¼
 				MPI_Send(&message, 1, MPI_INT, k, 0, MPI_COMM_WORLD);
 
 			}
 
 			for (int k = 1; k < ProcNum; k++) {
 
-				//Ïîëó÷àåì ñîîáùåíèÿ îò ïðîöåññîâ
+				//ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð¾Ñ‚ Ð¿Ñ€Ð¾Ñ†ÐµÑÑÐ¾Ð²
 				MPI_Recv(&recvmessage, 1, MPI_INT, k, MPI_ANY_TAG, MPI_COMM_WORLD, &Status);
 
 			}
@@ -57,10 +57,10 @@ int main(int argc, char* argv[])
 
 		else { 
 
-			//Ïîëó÷àåì ñîîáùåíèÿ îò ïðîöåññà 0 ðàíãà
+			//ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð¾Ñ‚ Ð¿Ñ€Ð¾Ñ†ÐµÑÑÐ° 0 Ñ€Ð°Ð½Ð³Ð°
 			MPI_Recv(&recvmessage, 1, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &Status);
 
-			//Îòïðàâëÿåì ñîîáùåíèÿ îáðàòíî â ïðîöåññ 0
+			//ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð¾Ð±Ñ€Ð°Ñ‚Ð½Ð¾ Ð² Ð¿Ñ€Ð¾Ñ†ÐµÑÑ 0
 			MPI_Send(&recvmessage, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 
 		}
