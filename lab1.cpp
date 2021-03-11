@@ -11,13 +11,13 @@ using namespace std;
 int main(int argc, char* argv[])
 
 {
-	int M = 20000000;
+	int M = 500;
 
 	double start, end, wastedTime;
 
 	int ProcNum, ProcRank;
 
-	int message = 128, recvmessage;
+	int message, recvmessage;
 
 	MPI_Status Status;
 
@@ -27,44 +27,19 @@ int main(int argc, char* argv[])
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
-	if (ProcRank == 0)
-
+	if (ProcRank == 0) {
+		recvmessage = 128;
 		start = MPI_Wtime();
+	}
 
 
 	for (int i = 0; i < M; i++)
-
 	{
+		MPI_Bcast(&recvmessage, 1, MPI_INT, 0, MPI_COMM_WORLD);
+		MPI_Reduce(&recvmessage, &message, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
 
-		if (ProcRank == 0) {
-
-
-			for (int k = 1; k < ProcNum; k++) {
-
-				//Отправляем сообщение от процесса ранга 0 всем остальным
-				MPI_Send(&message, 1, MPI_INT, k, 0, MPI_COMM_WORLD);
-
-			}
-
-			for (int k = 1; k < ProcNum; k++) {
-
-				//Получаем сообщения от процессов
-				MPI_Recv(&recvmessage, 1, MPI_INT, k, MPI_ANY_TAG, MPI_COMM_WORLD, &Status);
-
-			}
-
-		}
-
-		else { 
-
-			//Получаем сообщения от процесса 0 ранга
-			MPI_Recv(&recvmessage, 1, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &Status);
-
-			//Отправляем сообщения обратно в процесс 0
-			MPI_Send(&recvmessage, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
-
-		}
-
+		if (ProcRank == 0)
+			recvmessage = message;
 	}
 
 	if (ProcRank == 0) {
